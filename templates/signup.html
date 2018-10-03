@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CBM_CTF_SIGNUP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+  </head>
+  <body>
+    <div class="login-box" >
+      <img src="static/img/logo.png" class="avatar" alt="Avatar Image">
+      <h1>SignUp Here</h1>
+      <form method="post" action="">
+        <input type="text" name="firstname" placeholder="FirstName" value="{{ firstname }}" required>
+
+        <input type="email" name="email" placeholder="Email"  value="{{ email }}" required>
+        <p1 style="color:red;" >{{email_msg}}</p1>
+        <!-- USERNAME INPUT -->
+        <input type="text" name="username" placeholder="Username" value="{{ username }}" required>
+        <p1 style="color:red;" >{{username_msg}}</p1>
+        <!-- PASSWORD INPUT -->
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="submit" value="SignUp">
+        <a href="/" style="color:green;">Already have account</a><br>
+        <a href="#" style="color:green;">Terms and conditions</a>
+      </form>
+
+    </div>
+  </body>
+</html>

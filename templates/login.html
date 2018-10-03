@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% block body %}
+{% if session['logged_in'] %}
+<p>you are already logged in</p>
+{% else %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CBM_CTF_LOGIN</title>
+    <link rel="stylesheet" href="static/css/login.css">
+  </head>
+  <body>
+
+    <div class="login-box">
+      <img src="static/img/logo.png" class="avatar" alt="Avatar Image">
+      <h1>Login Here</h1>
+      <form method="post" action="">
+        <!-- USERNAME INPUT -->
+
+        <input type="text" name = "username" placeholder="Enter Username" value="{{ username }}" required>
+        <!-- PASSWORD INPUT -->
+
+        <input type="password" name = "password" placeholder="Enter Password" value="{{ password }}" required>
+        <input type="submit" value="Log In">
+        <p1 style="color:red;" >{{login_msg}}</p1>
+        <a href="#">Lost your Password?</a><br>
+        <a href="/signup">Don't have An account?</a>
+      </form>
+    </div>
+  </body>
+</html>
+{% endif %}
+{% endblock %}

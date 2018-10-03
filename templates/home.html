@@ -1,0 +1,458 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBM_CTF</title>
+    <link rel="icon" href="../static/img/home/favicon.png" type="image/x-icon" />
+    <link href="../static/css/home.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../static/js/polyfills.js"></script>
+    <script src="../static/js/main.js"></script> </head>
+    
+<body background="../static/img/home/bg.jpg">
+
+<!-- style css -->
+<style>
+    .terminal-button{
+    position: fixed;
+    padding: 2em;
+    left:20%;
+    top: 80%;
+    width:50px;
+    height:50px;
+    transition: transform .2s;
+
+    }
+    .terminal-button:hover{
+    transform: scale(1.5);
+    }
+    .practice-button{
+    position: fixed;
+    padding: 2em;
+    left: 40%;
+    top: 80%;
+    width:50px;
+    height:50px;
+    transition: transform .2s;
+    }
+    .practice-button:hover{
+    transform: scale(1.5);
+    }
+
+
+    .collapsible{
+    background-color: #777;
+    overflow-y:auto;
+    max-height:200px;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 80%;
+    border: 2px solid #4CAF50;;
+    text-align: left;
+    outline: none;
+    font-size: 15px
+    }
+    .active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 18px;
+    overflow-y:auto;
+    max-height:200px;
+    display: none;
+
+    background-color: black;
+}
+
+.leaderboard-button{
+position: fixed;
+    padding: 2em;
+    left: 60%;
+    top: 80%;
+    width:50px;
+    height:50px;
+    transition: transform .2s;
+    }
+    .leaderboard-button:hover{
+    transform: scale(1.5);
+    }
+
+
+    .lbjson table, th, td {
+    border: 1px solid blue;
+}
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.profile-pic img{
+position:absolute;
+top:100%;
+
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+
+<!--side-navigation-->
+
+ <div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+  <a href="http://localhost:5002/logout">LOGOUT</a>
+
+
+</div>
+
+
+<!-- Use any element to open the sidenav -->
+
+
+<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<div id="main">
+
+   <span style="font-size:30px;cursor:pointer;color:white" onclick="openNav()">&#9776;</span>
+
+    
+
+    <div class="terminal-button">
+<input   type="image" src="../static/img/home/terminal.png" onclick="showTerminal()" width="55" height="55">
+ </div>
+
+<div class="practice-button">
+    <input type="image" src="../static/img/home/practiceCTF.png" onclick="showPracticeWindow()" width="55" height="55">
+
+</div>
+
+<div class="leaderboard-button">
+<input   type="image" src="../static/img/home/leaderboard.png" onclick="showLeaderboard()" width="55" height="55">
+ </div>
+
+
+
+<!--Practice window-->
+<div id="practice" style="display:none;">
+    <div id="practiceheader"><button class="close" style="color:red;" onclick="document.getElementById('practice').style.display='none'">x</button> Practice Window</div>
+    <div id="practicecontainer">
+        <p>hello man </p>
+        <button class="collapsible">resverse a binary</button>
+        <div class="content">
+            <ul>
+                <li><button onclick="showProblem('rev01')">rev01</button></li>
+                <li><button onclick="showProblem('rev02')">rev02</button></li>
+                <li><button onclick="showProblem('rev03')">rev03</button></li>
+                <li><button onclick="showProblem('rev04')">rev04</button></li>
+                <li><button onclick="showProblem('rev05')">rev05</button></li>
+                <li><button onclick="showProblem('rev01')">rev01</button></li>
+                <li><button onclick="showProblem('rev02')">rev02</button></li>
+                <li><button onclick="showProblem('rev03')">rev03</button></li>
+                <li><button onclick="showProblem('rev04')">rev04</button></li>
+                <li><button onclick="showProblem('rev05')">rev05</button></li>
+            </ul>
+
+        </div>
+        <button class="collapsible">resverse a binary</button>
+        <div class="content">
+
+
+        </div>
+    </div>
+</div>
+<!--Problem window-->
+    <div id="problem" style="display:none;">
+        <div id="problemheader"><button class="close" style="color:red;" onclick="document.getElementById('problem').style.display='none'">x</button>Problem Detail</div>
+        <div id="problemcontainer">
+          <div id="probfull">
+          </div>
+        </div>
+    </div>
+
+<!--LeaderBoard window-->
+<div id="leaderboard" style="display:none;">
+    <div id="leaderboardheader"><button class="close" style="color:red;" onclick="document.getElementById('leaderboard').style.display='none'">x</button> LEADERBOARD
+    <button style="position:left;color:red;" onclick="refreshLeaderboard()">refresh</button>
+    </div>
+    <div id="leaderboardcontainer">
+      <div id="lbjson">
+      </div>
+    </div>
+</div>
+
+<!--terminal-->
+<div id="terminal" style="display:none;">
+
+<div id="terminalheader"><button class="close" style="color:red;" onclick="document.getElementById('terminal').style.display='none'" >x</button> LOCAL_TERMINAL</div>
+
+
+  <div id="container">
+       <div id="output"></div>
+       <div id="input-line" class="input-line">
+          <div id="prompt" class="prompt-color"></div>&nbsp;
+          <div>
+             <input type="text" id="cmdline" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                    autofocus/>
+          </div>
+        </div>
+
+
+  </div>
+</div>
+
+
+    <a id="githubImg" target="_blank" href="https://github.com/luisbraganca/fake-terminal-website/">
+        <img alt="Fork me on GitHub" src="../static/img/home/github_ribbon.png"> </a>
+
+
+</div>
+
+<!-- java script ----->
+<script type="text/javascript">
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    document.body.style.backgroundColor = "white";
+}
+function showTerminal() {
+   document.getElementById('terminal').style.display = "block";
+}
+function showPracticeWindow(){
+document.getElementById('practice').style.display="block";
+}
+function showComments(name){
+var xhr=new XMLHttpRequest();
+var url="http://localhost:5002/comments/"+name;
+xhr.open('GET',url,true);
+xhr.send();
+ xhr.onreadystatechange = processRequest;
+ function processRequest(e) {
+  if (xhr.readyState == 4 && xhr.status == 200) {
+   var response = JSON.parse(xhr.responseText);
+   divId=document.getElementById("commentsText");
+   var i;
+   var innerhtml='';
+   for(i=0;i<response.length;i++){
+   innerhtml="<div style='border:2px; border-style:solid; border-color:#FF0000; padding: 1em;'><p style='font-weight:bold'>username: "+(response[i][0]).toString()+"<br>date: "+(response[i][3]).toString()+"<br>text: "+response[i][2]+"</p></div>";
+   divId.innerHTML=divId.innerHTML+innerhtml;
+   }
+}
+
+}
+}
+function showProblem(name){
+ var divId=document.getElementById("probfull");
+ innerhtml="<h2>Problem name:  "+name+"</h2>";
+ var xhr=new XMLHttpRequest();
+ var url="http://localhost:5002/gettaskdetail/"+name;
+ xhr.open('GET',url,true);
+ xhr.send();
+ xhr.onreadystatechange = processRequest;
+ function processRequest(e) {
+  if (xhr.readyState == 4 && xhr.status == 200) {
+   var response = JSON.parse(xhr.responseText);
+
+   innerhtml=innerhtml+"<h3>Points:  "+(response[0][0]).toString()+"</h3><h3>Catagory: "+(response[0][2]).toString()+"</h3>";
+
+   innerhtml=innerhtml+"<h3>Description:</h3>"+"<p>"+(response[0][1]).toString()+"</p>";
+   innerhtml=innerhtml+"<a href='../static/files/rev50.zip'>Download file<br></a>";
+   comments="<h3 style='color:red'>comments: </h3>TEXT:<input type='text' name='ctext' id='ctext'><br><button onclick=\"addcomm(document.getElementById('ctext').value)\">add comment</buton> "+"<div id='commentsText'></div>";
+   showComments(name);
+   innerhtml=innerhtml+comments;
+   divId.innerHTML=innerhtml;
+
+   document.getElementById('problem').style.display="block";
+   }
+ }
+
+}
+
+
+//add comment
+function addcomm(text){
+
+}
+
+function refreshLeaderboard(){
+var xhr = new XMLHttpRequest();
+                  xhr.open('GET', "http://localhost:5002/leaderboard", true);
+                  xhr.send();
+                  xhr.onreadystatechange = processRequest;
+                  function processRequest(e) {
+                  if (xhr.readyState == 4 && xhr.status == 200) {
+                     var response = JSON.parse(xhr.responseText);
+                     var stack=[];
+                     var divId=document.getElementById("lbjson");
+                     lb="<table style='width:100%'><tr><th>Rank</th><th>Username</th><th>Points</th></tr>";
+                     for(var i=0;i<response.length;i++){
+                     for(var keys in response[i]){
+                     stack.push(response[i][keys]);
+                     }
+                     un=stack.pop();
+                     p=stack.pop();
+                     if(un==username){
+                     lb=lb+"<tr bgcolor=gray><td>"+(i+1).toString()+"</td><td>"+(un).toString()+"</td><td>"+(p).toString()+"</td></tr>";
+                     }
+                     else{
+                     lb=lb + "<tr><td>"+(i+1).toString()+"</td><td>"+(un).toString()+"</td><td>"+(p).toString()+"</td></tr>";
+                     }
+                     }
+                     lb = lb+"</table>";
+                     divId.innerHTML=lb;
+
+                    }
+                   }
+}
+function showLeaderboard(){
+document.getElementById('leaderboard').style.display="block";
+}
+//Make the DIV element draggagle:
+dragElement(document.getElementById("practice"));
+dragElement(document.getElementById("terminal"));
+dragElement(document.getElementById("leaderboard"));
+dragElement(document.getElementById("problem"));
+
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    console.log(content)
+    console.log(content.style.display)
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
+
+var xhr = new XMLHttpRequest();
+                  xhr.open('GET', "http://localhost:5002/leaderboard", true);
+                  xhr.send();
+                  xhr.onreadystatechange = processRequest;
+                  function processRequest(e) {
+                  if (xhr.readyState == 4 && xhr.status == 200) {
+                     var response = JSON.parse(xhr.responseText);
+                     var stack=[];
+                     var divId=document.getElementById("lbjson");
+                     lb="<table style='width:100%'><tr><th>Rank</th><th>Username</th><th>Points</th></tr>";
+                     for(var i=0;i<response.length;i++){
+                     for(var keys in response[i]){
+                     stack.push(response[i][keys]);
+                     }
+                     un=stack.pop();
+                     p=stack.pop();
+                     if(un==username){
+                     lb=lb+"<tr bgcolor=grey><td>"+(i+1).toString()+"</td><td>"+(un).toString()+"</td><td>"+(p).toString()+"</td></tr>";
+                     }
+                     else{
+                     lb=lb + "<tr><td>"+(i+1).toString()+"</td><td>"+(un).toString()+"</td><td>"+(p).toString()+"</td></tr>";
+                     }
+                     }
+                     lb = lb+"</table>";
+                     divId.innerHTML=lb;
+
+                    }
+                   }
+</script>
+
+</body>
+
+</html>
+
