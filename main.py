@@ -4,7 +4,6 @@ from gevent.pywsgi import WSGIServer
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer,SignatureExpired
 from flask import render_template,jsonify, request, url_for, Flask,session,abort,flash,redirect,json
-#db= _mysql.connect(host="localhost",port=3307,user='guru',passwd="cbmguru",db="rootthebox")
 
 app=Flask(__name__)
 app.config.from_pyfile('static/config.cfg')
