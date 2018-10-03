@@ -22,3 +22,10 @@ def get_task_details(taskname):
     r=tasks_dao.get_task_details(taskname)
     return r
 
+def get_taskid(taskname):
+    r=tasks_dao.getTaskId_By_task_name(taskname)
+    return r.fetch_row()
+
+def get_task_list(category):
+    r=tasks_dao.get_task_list(category)
+    return r

@@ -10,13 +10,14 @@ db = _mysql.connect(host=db_data['host'], port=db_data['port'], user=db_data['us
 def get_comments(taskname):
     t=tasks_dao.getTaskId_By_task_name(taskname)
     tid=t.fetch_row()
-    query="select username,taskid,text,created from comments where taskid="+tid[0][0]
+    query="select username,taskid,text,created from comments where taskid="+tid[0][0] +" order by created desc"
     db.query(query)
     r=db.store_result()
     return r
 
 def add_comment(comment):
-    print comment.username
+    if comment.text=="":
+        comment.text="cbm is awesome"
     if comment!=None:
-        query = "insert into comments(username,text) values('" + comment.username + "','" + comment.text + "')"
+        query = "insert into comments(username,text,taskid) values('" + str(comment.username) + "','" + str(comment.text) +"',"+str((comment.taskid))+ ")"
         db.query(query)

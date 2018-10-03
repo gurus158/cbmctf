@@ -1,7 +1,7 @@
 class Comments:
-    username=''
+    username='kid0cool'
     taskid=0
-    text=''
+    text='cbm is awesome'
 
     def __init__(self,username,taskid,text):
         self.username=username
@@ -20,12 +20,12 @@ class Comments:
         return self.text
 
     @taskid.setter
-    def tasskid(self,taskid):
+    def taskid(self,taskid):
         if taskid != None:
             self.taskid = taskid
 
     @username.setter
-    def userid(self,username):
+    def username(self,username):
         if username != None:
             self.userid=username
 

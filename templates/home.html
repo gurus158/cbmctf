@@ -2,10 +2,10 @@
 
 <head>
 
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBM_CTF</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CBM_CTF</title>
     <link rel="icon" href="../static/img/home/favicon.png" type="image/x-icon" />
     <link href="../static/css/home.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -60,7 +60,15 @@
     background-color: #555;
 }
 
-.content {
+#revcontent {
+    padding: 0 18px;
+    overflow-y:auto;
+    max-height:200px;
+    display: none;
+
+    background-color: black;
+}
+#crycontent {
     padding: 0 18px;
     overflow-y:auto;
     max-height:200px;
@@ -181,24 +189,11 @@ top:100%;
     <div id="practiceheader"><button class="close" style="color:red;" onclick="document.getElementById('practice').style.display='none'">x</button> Practice Window</div>
     <div id="practicecontainer">
         <p>hello man </p>
-        <button class="collapsible">resverse a binary</button>
-        <div class="content">
-            <ul>
-                <li><button onclick="showProblem('rev01')">rev01</button></li>
-                <li><button onclick="showProblem('rev02')">rev02</button></li>
-                <li><button onclick="showProblem('rev03')">rev03</button></li>
-                <li><button onclick="showProblem('rev04')">rev04</button></li>
-                <li><button onclick="showProblem('rev05')">rev05</button></li>
-                <li><button onclick="showProblem('rev01')">rev01</button></li>
-                <li><button onclick="showProblem('rev02')">rev02</button></li>
-                <li><button onclick="showProblem('rev03')">rev03</button></li>
-                <li><button onclick="showProblem('rev04')">rev04</button></li>
-                <li><button onclick="showProblem('rev05')">rev05</button></li>
-            </ul>
-
+        <button class="collapsible" onclick="showProbList('rev')">resverse a binary</button>
+        <div id="revcontent">
         </div>
         <button class="collapsible">resverse a binary</button>
-        <div class="content">
+        <div id="crycontent">
 
 
         </div>
@@ -253,6 +248,7 @@ top:100%;
 
 <!-- java script ----->
 <script type="text/javascript">
+var btrev=0;
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -283,13 +279,54 @@ xhr.send();
    var i;
    var innerhtml='';
    for(i=0;i<response.length;i++){
-   innerhtml="<div style='border:2px; border-style:solid; border-color:#FF0000; padding: 1em;'><p style='font-weight:bold'>username: "+(response[i][0]).toString()+"<br>date: "+(response[i][3]).toString()+"<br>text: "+response[i][2]+"</p></div>";
+   innerhtml="<div style='border:2px; border-style:solid; border-color:#FF0000; padding: 1em;'><p style='font-weight:bold'>username: <span style='color: #ff0000'>"+(response[i][0]).toString()+"</span><br>date: <span style='color: #ff0000'>"+(response[i][3]).toString()+"</span><br>text: <span style='color: #ff0000'>"+response[i][2]+"</span></p></div>";
    divId.innerHTML=divId.innerHTML+innerhtml;
    }
+
 }
 
 }
 }
+function showProbList(category){
+
+   var id=''
+   switch (category){
+   case "rev":
+   id='revcontent';
+   if(btrev==0){
+   var xhr = new XMLHttpRequest();
+   var url = "http://localhost:5002/gettasklist/"+category;
+                  xhr.open('GET',url, true);
+                  xhr.send();
+                  xhr.onreadystatechange = processRequest;
+                  function processRequest(e) {
+                  if (xhr.readyState == 4 && xhr.status == 200) {
+                     var response = JSON.parse(xhr.responseText);
+                     var i;
+                     var innerhtml='<ul>';
+                     for(i=0;i<response.length;i++){
+                     innerhtml=innerhtml+"<li><button onclick=\"showProblem('" + response[i][0] + "')\">"+response[i][0]+"</button></li>"
+                     }
+                     innerhtml=innerhtml+"</ul>"
+                     var divId=document.getElementById(id);
+
+                     divId.innerHTML=innerhtml;
+
+                     }
+
+                     }
+btrev=1;
+}
+   break;
+   case "cry":
+   id='crycontent';
+   break;
+   default:
+   break;
+   }
+
+}
+
 function showProblem(name){
  var divId=document.getElementById("probfull");
  innerhtml="<h2>Problem name:  "+name+"</h2>";
@@ -306,11 +343,11 @@ function showProblem(name){
 
    innerhtml=innerhtml+"<h3>Description:</h3>"+"<p>"+(response[0][1]).toString()+"</p>";
    innerhtml=innerhtml+"<a href='../static/files/rev50.zip'>Download file<br></a>";
-   comments="<h3 style='color:red'>comments: </h3>TEXT:<input type='text' name='ctext' id='ctext'><br><button onclick=\"addcomm(document.getElementById('ctext').value)\">add comment</buton> "+"<div id='commentsText'></div>";
+   comments="<h3 style='color:red'>comments: </h3>TEXT:<input type='text' name='ctext' id='ctext' style='width:100%;height:10%;' /><br><button type=\"submit\" style=\"border:1px solid blue\" onclick=\"addcomm(document.getElementById('ctext').value,'"+name+"')\">add comment</button> "+"<br><br><div id=\"commentsText\"></div>";
    showComments(name);
    innerhtml=innerhtml+comments;
    divId.innerHTML=innerhtml;
-
+   console.log(divId.innerHTML);
    document.getElementById('problem').style.display="block";
    }
  }
@@ -319,8 +356,24 @@ function showProblem(name){
 
 
 //add comment
-function addcomm(text){
-
+function addcomm(text,name){
+var xhr = new XMLHttpRequest();
+var url="http://localhost:5002/addcomment";
+xhr.open('POST',url,true);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.send(JSON.stringify({username:username,taskname:name,text:text}));
+xhr.onreadystatechange=processRequest;
+             function processRequest(e){
+             if (xhr.readyState==4 && xhr.status==200){
+             var response=JSON.parse(xhr.responseText);
+             if(response=="True"){
+             showProblem(name);
+             }
+             else{
+             alert("'<', '>' , '/' are not allowed in comment body please donot use them");
+             }
+             }
+               }
 }
 
 function refreshLeaderboard(){
@@ -411,8 +464,8 @@ for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
-    console.log(content)
-    console.log(content.style.display)
+
+
     if (content.style.display === "block") {
       content.style.display = "none";
     } else {

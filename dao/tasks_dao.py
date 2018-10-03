@@ -20,3 +20,8 @@ def get_task_details(taskname):
     query="select points,description,catagory from tasks where name='"+taskname+"'"
     db.query(query)
     return (db.store_result()).fetch_row()
+
+def get_task_list(category):
+    query="select name from tasks where catagory='"+category+"' order by points"
+    db.query(query)
+    return (db.store_result()).fetch_row(maxrows=0)

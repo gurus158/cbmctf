@@ -5,10 +5,10 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer,SignatureExpired
 from flask import render_template,jsonify, request, url_for, Flask,session,abort,flash,redirect,json
 
-app=Flask(__name__)
+app = Flask(__name__)
 app.config.from_pyfile('static/config.cfg')
-mail=Mail(app)
-s= URLSafeTimedSerializer("cbm_ctf_by_cbm")
+mail = Mail(app)
+s = URLSafeTimedSerializer("cbm_ctf_by_cbm")
 
 
 @app.route('/')
@@ -18,12 +18,14 @@ def home():
     else:
         return  render_template('home.html')
 
+
 @app.route('/getusername')
 def getusername():
     if session.get('logged_in'):
         return jsonify(session['username'])
     else:
         return jsonify("please login first")
+
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
@@ -35,8 +37,8 @@ def login():
             login_msg = ''
 
         if login_msg != '':
-            #flash("wrong username or password")
-            return render_template('login.html', username=login_details['username'], password=login_details['password'],login_msg=login_msg)
+            flash("wrong username or password")
+            return render_template('login.html', username=login_details['username'], password=login_details['password'], login_msg=login_msg)
         else:
             session['logged_in'] = True
             session['username']=login_details['username']
@@ -81,6 +83,7 @@ def signup():
 
     return render_template('signup.html')
 
+
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
     try:
@@ -90,6 +93,14 @@ def confirm_email(token):
     print email
     user_service.confirm_email(email)
     return '<h1>The token works!</h1>'
+
+
+@app.route('/forgotpassword',methods=['GET', 'POST'])
+def forgotpassword():
+    if request.method == 'POST':
+        return "mail sent"
+    return render_template('forgotpassword.html')
+
 
 @app.route('/submitflag/<username>',methods=['POST'])
 def submitflag(username):
@@ -109,10 +120,12 @@ def submitflag(username):
 
     return jsonify(res)
 
+
 @app.route('/leaderboard')
 def leaderboard():
     leaderboard=user_service.get_leaderboard()
     return jsonify(leaderboard)
+
 
 @app.route('/logout')
 def logout():
@@ -121,17 +134,24 @@ def logout():
     flash("successfully Logged out")
     return redirect('/login')
 
+
 @app.route('/gettaskdetail/<taskname>')
 def gettaskdetail(taskname):
     taskdetails=tasks_service.get_task_details(taskname)
     return jsonify(taskdetails)
 
+
+@app.route('/gettasklist/<category>')
+def gettasklist(category):
+    result=tasks_service.get_task_list(category)
+    return jsonify(result)
+
+
 @app.route('/addcomment',methods=['POST'])
 def addcomment():
-    comment_detail=request.form
-    print comment_detail['username']
-    comments_service.add_comment(comment_detail)
-    return redirect('/')
+    comment_detail=json.loads(request.data)
+    r=comments_service.add_comment(comment_detail)
+    return jsonify(r)
 
 
 @app.route('/comments/<taskname>')
@@ -144,7 +164,6 @@ def getComments(taskname):
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     return response
-
 
 
 if __name__ == '__main__':
