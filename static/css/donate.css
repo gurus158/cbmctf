@@ -1,0 +1,30 @@
+.donate{
+position: absolute;
+top:0%;
+left:30%;
+bottom:50%;
+
+
+}
+
+.donate img{
+width:350px;
+height:500px;
+
+}
+
+.donate h1{
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  color:blue;
+  font-size: 22px;
+}
+
+.donate p{
+margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  color:red;
+  font-size: 22px;
+}

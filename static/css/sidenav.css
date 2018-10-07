@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: url(../img/sidenav-menu/bg.jpg) repeat left top ;
+  background-size: cover;
+  font-family: sans-serif;
+  height: 100vh;
+}
+
+h1 {
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  color:red;
+  font-size: 22px;
+}
+
+p{
+margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  color:green;
+  font-size: 22px;
+}
+a{
+padding: 0 0 20px;
+  color:blue;
+  font-size: 22px;
+}

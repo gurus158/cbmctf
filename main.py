@@ -3,7 +3,7 @@ import os as os
 from gevent.pywsgi import WSGIServer
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer,SignatureExpired
-from flask import render_template,jsonify, request, url_for, Flask,session,abort,flash,redirect,json
+from flask import render_template,jsonify, request, Flask, session, flash, redirect,json
 
 app = Flask(__name__)
 app.config.from_pyfile('static/config.cfg')
@@ -11,6 +11,7 @@ mail = Mail(app)
 s = URLSafeTimedSerializer("cbm_ctf_by_cbm")
 
 
+# base url
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -19,6 +20,7 @@ def home():
         return  render_template('home.html')
 
 
+# api to get username of logged in user
 @app.route('/getusername')
 def getusername():
     if session.get('logged_in'):
@@ -27,6 +29,7 @@ def getusername():
         return jsonify("please login first")
 
 
+# login
 @app.route('/login', methods = ['GET','POST'])
 def login():
     if request.method == 'POST' :
@@ -48,6 +51,7 @@ def login():
     return  render_template('login.html')
 
 
+# signup
 @app.route('/signup', methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
@@ -84,6 +88,7 @@ def signup():
     return render_template('signup.html')
 
 
+# confirm email
 @app.route('/confirm_email/<token>')
 def confirm_email(token):
     try:
@@ -95,7 +100,7 @@ def confirm_email(token):
     return render_template("email_confirmed.html")
 
 
-
+# reset password
 @app.route('/reset_password/<token>',methods=['POST','GET'])
 def reset_pass(token):
     if request.method == 'POST':
@@ -118,7 +123,7 @@ def reset_pass(token):
         forgot_pass_service.set_token_used(token)
         return render_template('reset_password.html')
 
-
+# forgot password
 @app.route('/forgotpassword',methods=['GET', 'POST'])
 def forgotpassword():
     if request.method == 'POST':
@@ -139,6 +144,7 @@ def forgotpassword():
     return render_template('forgotpassword.html')
 
 
+# submit flag  of a problem
 @app.route('/submitflag/<username>',methods=['POST'])
 def submitflag(username):
     req_data=json.loads(request.data)
@@ -157,11 +163,28 @@ def submitflag(username):
 
     return jsonify(res)
 
-
+# leader-board
 @app.route('/leaderboard')
 def leaderboard():
     leaderboard=user_service.get_leaderboard()
     return jsonify(leaderboard)
+
+
+# side-nav menu
+@app.route('/about')
+def about():
+    if not session.get('logged_in'):
+        return redirect("/login")
+
+    return render_template('about.html')
+
+
+@app.route('/contact')
+def contact():
+    if not session.get('logged_in'):
+        return redirect("/login")
+
+    return render_template('contact.html')
 
 
 @app.route('/logout')
@@ -172,18 +195,21 @@ def logout():
     return redirect('/login')
 
 
+# api to get task detail
 @app.route('/gettaskdetail/<taskname>')
 def gettaskdetail(taskname):
     taskdetails=tasks_service.get_task_details(taskname)
     return jsonify(taskdetails)
 
 
+# api to get task list
 @app.route('/gettasklist/<category>')
 def gettasklist(category):
     result=tasks_service.get_task_list(category)
     return jsonify(result)
 
 
+# add comment
 @app.route('/addcomment',methods=['POST'])
 def addcomment():
     comment_detail=json.loads(request.data)
@@ -191,12 +217,20 @@ def addcomment():
     return jsonify(r)
 
 
+# get comments list of a task
 @app.route('/comments/<taskname>')
 def getComments(taskname):
     comment_list=comments_service.get_comments(taskname)
     return jsonify(comment_list)
 
 
+# donate
+@app.route('/donate')
+def donate():
+    return render_template("donate.html")
+
+
+# no cache saved
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
