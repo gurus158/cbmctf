@@ -1,4 +1,4 @@
-from services import user_service,tasks_service,comments_service
+from services import user_service,tasks_service,comments_service,forgot_pass_service
 import os as os
 from gevent.pywsgi import WSGIServer
 from flask_mail import Mail, Message
@@ -92,13 +92,50 @@ def confirm_email(token):
         return "<h1>Token is expired!!</h1>"
     print email
     user_service.confirm_email(email)
-    return '<h1>The token works!</h1>'
+    return render_template("email_confirmed.html")
+
+
+
+@app.route('/reset_password/<token>',methods=['POST','GET'])
+def reset_pass(token):
+    if request.method == 'POST':
+        if forgot_pass_service.is_token_used(token):
+            return "<h1> Token is already used or expired!!</h1>"
+        req_det = request.form
+        email=forgot_pass_service.get_email(token)
+        user_service.set_password(req_det['pwd1'],email)
+        forgot_pass_service.delete_row(email)
+        return render_template("password_reset_successfully.html")
+
+    else:
+        try:
+            email = s.loads(token, salt='forgot_password', max_age=3600)
+        except SignatureExpired:
+            mail = forgot_pass_service.get_email(token)
+            forgot_pass_service.delete_row(mail)
+            return "<h1>Token is expired!!</h1>"
+        user_service.confirm_email(email)
+        forgot_pass_service.set_token_used(token)
+        return render_template('reset_password.html')
 
 
 @app.route('/forgotpassword',methods=['GET', 'POST'])
 def forgotpassword():
     if request.method == 'POST':
-        return "mail sent"
+        req_det=request.form
+        email=req_det['email']
+        if user_service.check_email(email):
+            return "email is not in database please enter valid email or signup"
+        print email
+        token = s.dumps(email, salt='forgot_password')
+        forgot_pass_service.add_token_mail(token,email)
+        msg = Message('RESET PASSWORD by CBM CTF', sender='divya.dulyan8@gmail.com',
+                      recipients=[email])
+        # link= url_for('confirm_email', token=token,_external=True)
+        link = "http://localhost:5002/reset_password/" + token
+        msg.body = 'password reset link is {}'.format(link)
+        mail.send(msg)
+        return "<h1>mail sent</h1><a href='/login'>LOGIN</a><br>"
     return render_template('forgotpassword.html')
 
 

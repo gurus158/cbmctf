@@ -62,3 +62,12 @@ def already_solved(username,task_name):
 def get_leaderboard():
     r=user_dao.get_leaderboard()
     return r.fetch_row(maxrows=0,how=1)
+
+def set_password(passwd,email):
+    if passwd is not None:
+
+        r= user_dao.get_username_by_email(email)
+        username=r[0][0]
+        print username
+        passwd
+        user_dao.set_passwd(passwd,username)

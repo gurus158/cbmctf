@@ -114,3 +114,15 @@ def update_rank(username):
 
         i = i+1
 
+
+def set_passwd(passwd,username):
+    if passwd is not  None:
+        query = "update users set password='" + passwd + "' where username='" + username +"'"
+        print  query
+        db.query(query)
+
+def get_username_by_email(email):
+    if email is not  None:
+        query = "select username from users where email = '" + email + "'"
+        db.query(query)
+        return (db.store_result()).fetch_row()
