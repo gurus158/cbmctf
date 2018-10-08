@@ -1,5 +1,5 @@
 host: 'localhost'
-user: 'guru'
-password: 'cbmguru'
-db: 'cbmCTF'
+user: 'user'
+password: 'password'
+db: 'db'
 port: 3307
