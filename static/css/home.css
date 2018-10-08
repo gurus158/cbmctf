@@ -118,7 +118,12 @@ background-color: transparent;
 max-height:340px;
 width:95%;
 }
-
+#videocontainer{
+overflow-y:auto;
+background-color: transparent;
+max-height:340px;
+width:95%;
+}
 #githubImg img {
     position: fixed;
     bottom: 0; right: 0;
@@ -177,7 +182,32 @@ width:95%;
     text-align: left;
     border: 1px solid #d3d3d3;
 }
+#videos{
+position: absolute;
+    top: 20%;
+    left: 40%;
+    display : block;
+    margin:auto;
+    overflow-y:auto;
+    z-index: 9;
+    height: 400px;
+    width: 50%;
+    background-color: black;
+    opacity:0.95;
+    text-align: left;
+    border: 1px solid #d3d3d3;
+}
+#videosheader{
+padding: 7px;
+    position:relative;
 
+    top:0;
+    left:0;
+    cursor: move;
+    z-index: 10;
+    background-color: gray;
+    color: #fff;
+}
 #problem{
     position: absolute;
     top: 20%;

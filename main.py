@@ -1,4 +1,4 @@
-from services import user_service,tasks_service,comments_service,forgot_pass_service
+from services import user_service,tasks_service,comments_service,forgot_pass_service, videos_service
 import os as os
 from gevent.pywsgi import WSGIServer
 from flask_mail import Mail, Message
@@ -228,6 +228,20 @@ def getComments(taskname):
 @app.route('/donate')
 def donate():
     return render_template("donate.html")
+
+
+# get videos list
+@app.route('/getvideolist')
+def getvideolist():
+    r = videos_service.get_video_list()
+    return  jsonify(r)
+
+
+# get video details
+@app.route('/getvideodetail/<videoname>')
+def getvideodetail(videoname):
+    r = videos_service.get_video_details(videoname)
+    return jsonify(r)
 
 
 # no cache saved
