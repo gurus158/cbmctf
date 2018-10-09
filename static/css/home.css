@@ -95,35 +95,42 @@ body {
     color: #fff;
 }
 #container{
-overflow-y:auto;
-background-color: transparent;
-max-height:340px;
-width:93%; 
+  overflow-y:auto;
+  background-color: transparent;
+  max-height:340px;
+  width:93%;
 }
 #practicecontainer{
-overflow-y:auto;
-background-color: transparent;
-max-height:340px;
-width:95%;
+  overflow-y:auto;
+  background-color: transparent;
+  max-height:340px;
+  width:95%;
 }
 #problemcontainer{
-overflow-y:auto;
-background-color: transparent;
-max-height:340px;
-width:95%;
+  overflow-y:auto;
+  background-color: transparent;
+  max-height:340px;
+  width:95%;
 }
 #leaderboardcontainer{
-overflow-y:auto;
-background-color: transparent;
-max-height:340px;
-width:95%;
+  overflow-y:auto;
+  background-color: transparent;
+  max-height:340px;
+  width:95%;
 }
 #videocontainer{
-overflow-y:auto;
-background-color: transparent;
-max-height:340px;
-width:95%;
+  overflow-y:auto;
+  background-color: transparent;
+  max-height:340px;
+  width:95%;
 }
+#videoplayercontainer{
+  overflow-y:auto;
+  background-color: transparent;
+  max-height:340px;
+  width:95%;
+}
+
 #githubImg img {
     position: fixed;
     bottom: 0; right: 0;
@@ -183,7 +190,7 @@ width:95%;
     border: 1px solid #d3d3d3;
 }
 #videos{
-position: absolute;
+    position: absolute;
     top: 20%;
     left: 40%;
     display : block;
@@ -198,9 +205,33 @@ position: absolute;
     border: 1px solid #d3d3d3;
 }
 #videosheader{
-padding: 7px;
+    padding: 7px;
     position:relative;
-
+    top:0;
+    left:0;
+    cursor: move;
+    z-index: 10;
+    background-color: gray;
+    color: #fff;
+}
+#videoplayer{
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    display : block;
+    margin:auto;
+    overflow-y:auto;
+    z-index: 9;
+    height: 400px;
+    width: 50%;
+    background-color: black;
+    opacity:0.95;
+    text-align: left;
+    border: 1px solid #d3d3d3;
+}
+#videoplayerheader{
+    padding: 7px;
+    position:relative;
     top:0;
     left:0;
     cursor: move;

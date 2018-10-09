@@ -204,21 +204,28 @@ top:100%;
  </div>
 
 <div class="video-button">
-    <input   type="image" src="../static/img/home/videoplayer.jpg" onclick="showVideoPlayer()" width="55" height="55">
+    <input   type="image" src="../static/img/home/videoplayer.jpg" onclick="showVideoList()" width="55" height="55">
 </div>
-
+<!--video list-->
 <div id="videos" style="display:none;">
-    <div id="videosheader"><button class="close" style="color:red;" onclick="document.getElementById('videos').style.display='none'">x</button> VIDEOS_LIST</div>
+    <div id="videosheader"><button class="close" style="color:red;" onclick="document.getElementById('videos').style.display='none'">x</button> VIDEOS_LIST(draggable window)</div>
     <div id="videocontainer">
         <p>Hi! BELOW ARE SOME TUTORIAL VIDEOS . CLICK TO WATCH VIDEO<br>THIS WINDOW IS DRAGGABLE. </p>
-
         <div id="videosList">
         </div>
     </div>
 </div>
+    <!--video player-->
+    <div id="videoplayer" style="display:none;">
+        <div id="videoplayerheader"><button class="close" style="color:red;" onclick="document.getElementById('videoplayer').style.display='none'">x</button> VIDEO_PLAYER(draggable window)</div>
+        <div id="videoplayercontainer">
+            <div id="player">
+            </div>
+        </div>
+    </div>
 <!--Practice window-->
 <div id="practice" style="display:none;">
-    <div id="practiceheader"><button class="close" style="color:red;" onclick="document.getElementById('practice').style.display='none'">x</button> Practice Window</div>
+    <div id="practiceheader"><button class="close" style="color:red;" onclick="document.getElementById('practice').style.display='none'">x</button> Practice Window(draggable window)</div>
     <div id="practicecontainer">
         <p>Hi! BELOW ARE PROBLEM DIVIDED IN DIFFERENT CATAGORY. CLICK TO GET PROBLEM LIST<br>THIS WINDOW IS DRAGGABLE. </p>
         <button class="collapsible" onclick="showProbList('rev')">resverse a binary</button>
@@ -233,7 +240,7 @@ top:100%;
 </div>
 <!--Problem window-->
     <div id="problem" style="display:none;">
-        <div id="problemheader"><button class="close" style="color:red;" onclick="document.getElementById('problem').style.display='none'">x</button> Problem Detail</div>
+        <div id="problemheader"><button class="close" style="color:red;" onclick="document.getElementById('problem').style.display='none'">x</button> Problem Detail(draggable window)</div>
         <div id="problemcontainer">
           <div id="probfull">
           </div>
@@ -242,7 +249,7 @@ top:100%;
 
 <!--LeaderBoard window-->
 <div id="leaderboard" style="display:none;">
-    <div id="leaderboardheader"><button class="close" style="color:red;" onclick="document.getElementById('leaderboard').style.display='none'">x</button> LEADERBOARD
+    <div id="leaderboardheader"><button class="close" style="color:red;" onclick="document.getElementById('leaderboard').style.display='none'">x</button> LEADERBOARD(draggable window)
     <button style="position:left;color:red;" onclick="refreshLeaderboard()">refresh</button>
     </div>
     <div id="leaderboardcontainer">
@@ -254,7 +261,7 @@ top:100%;
 <!--terminal-->
 <div id="terminal" style="display:none;">
 
-<div id="terminalheader"><button class="close" style="color:red;" onclick="document.getElementById('terminal').style.display='none'" >x</button> LOCAL_TERMINAL</div>
+<div id="terminalheader"><button class="close" style="color:red;" onclick="document.getElementById('terminal').style.display='none'" >x</button> LOCAL_TERMINAL(draggable window)</div>
 
 
   <div id="container">
@@ -294,9 +301,7 @@ function showTerminal() {
 function showPracticeWindow(){
 document.getElementById('practice').style.display="block";
 }
-function showVideoPlayer(){
-document.getElementById('videos').style.display="block";
-}
+
 
 function showComments(name){
 var xhr=new XMLHttpRequest();
@@ -330,35 +335,18 @@ var xhr=new XMLHttpRequest();
  function processRequest(e) {
   if (xhr.readyState == 4 && xhr.status == 200) {
    var response = JSON.parse(xhr.responseText);
-   console.log(response);
+   console.log(response[0][1]);
+   var divId=document.getElementById("player");
+   var innerHtml=""
+   innerHtml = innerHtml+"<video width=\"600\" height=\"350\" controls><source src='"+response[0][0]+"' type=\"video/mp4\">Your browser does not support the video tag.</video> "
+   innerHtml= innerHtml+"<h3>Video Name: "+response[0][1]+"</h3><h3>Description: "+response[0][2]+"</h3>"
+   var divId=document.getElementById("player");
+   divId.innerHTML=innerHtml;
+   document.getElementById('videoplayer').style.display="block";
    }
    }
 }
 
-function showVideoList(){
-
-
-var hr = new XMLHttpRequest();
-   var url = "http://localhost:5002/getvideolist";
-                  hr.open('GET',url, true);
-                  hr.send();
-                  console.log("in showVideoList");
-                  hr.onreadystatechange = processRequest;
-                  function processRequest(e){
-                  if (hr.readyState == 4 && hr.status == 200){
-                     var response = JSON.parse(hr.responseText);
-                     console.log(response);
-                     var innerHtml='<ul>';
-                     for(i=0;i<response.length;i++){
-                     innerHtml=innerHtml+"<li><button onclick=\"showVideo('" + response[i][0] + "')\">"+response[i][0]+"</button></li>";
-                     }
-                     innerHtml=innerHtml+'</ul>';
-                     console.log(innerHtml);
-                     var divId=document.getElementById(id);
-                     divId.innerHTML=innerHtml;
-                     }
-                     }
-}
 
 function showProbList(category){
 
@@ -430,12 +418,12 @@ function showProblem(name){
 
 //add comment
 function addcomm(text,name){
-var xhr = new XMLHttpRequest();
-var url="http://localhost:5002/addcomment";
-xhr.open('POST',url,true);
-xhr.setRequestHeader("Content-Type", "application/json");
-xhr.send(JSON.stringify({username:username,taskname:name,text:text}));
-xhr.onreadystatechange=processRequest;
+            var xhr = new XMLHttpRequest();
+            var url="http://localhost:5002/addcomment";
+            xhr.open('POST',url,true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({username:username,taskname:name,text:text}));
+            xhr.onreadystatechange=processRequest;
              function processRequest(e){
              if (xhr.readyState==4 && xhr.status==200){
              var response=JSON.parse(xhr.responseText);
@@ -450,7 +438,7 @@ xhr.onreadystatechange=processRequest;
 }
 
 function refreshLeaderboard(){
-var xhr = new XMLHttpRequest();
+                  var xhr = new XMLHttpRequest();
                   xhr.open('GET', "http://localhost:5002/leaderboard", true);
                   xhr.send();
                   xhr.onreadystatechange = processRequest;
@@ -484,15 +472,37 @@ document.getElementById('leaderboard').style.display="block";
 }
 
 function showVideoList(){
-document.getElementById('videos').style.display="block";
+                  document.getElementById('videos').style.display="block";
+                  var hr = new XMLHttpRequest();
+                  var url = "http://localhost:5002/getvideolist";
+                  hr.open('GET',url, true);
+                  hr.send();
+                  console.log("in showVideoList");
+                  hr.onreadystatechange = processRequest;
+                  function processRequest(e){
+                  if (hr.readyState == 4 && hr.status == 200){
+                     var response = JSON.parse(hr.responseText);
+                     console.log(response);
+                     var innerHtml='<ul>';
+                     for(i=0;i<response.length;i++){
+                     innerHtml=innerHtml+"<li><button onclick=\"showVideo('" + response[i][0] + "')\">"+response[i][0]+"</button></li>";
+                     }
+                     innerHtml=innerHtml+'</ul>';
+                     console.log(innerHtml);
+                     var divId=document.getElementById('videosList');
+                     divId.innerHTML=innerHtml;
+                     }
+                     }
+
 }
+
 //Make the DIV element draggagle:
 dragElement(document.getElementById("practice"));
 dragElement(document.getElementById("terminal"));
 dragElement(document.getElementById("leaderboard"));
 dragElement(document.getElementById("videos"));
 dragElement(document.getElementById("problem"));
-
+dragElement(document.getElementById("videoplayer"));
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
